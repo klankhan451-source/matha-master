@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>মাথা মাস্টার / Matha Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--cyan:#22d3ee;--gold:#fbbf24;--gold2:#f59e0b;--card:rgba(255,255,255,.08);--line:rgba(255,255,255,.16)}
+body{font-family:'Hind Siliguri','Poppins',sans-serif;background:linear-gradient(160deg,#070b2e 0%,#1b1040 55%,#3b1163 100%);color:#fff;min-height:100vh}
+.wrap{max-width:480px;margin:0 auto;padding:14px 14px 30px;position:relative}
+button{font-family:inherit;cursor:pointer;border:none}
+input,select{font-family:inherit}
+.hud{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:8px 10px;position:sticky;top:8px;z-index:30;backdrop-filter:blur(6px)}
+.hud .pname{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
+.coinbox{margin-left:auto;display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.35);border:1px solid var(--gold2);color:var(--gold);font-weight:800;border-radius:999px;padding:5px 12px;font-size:16px;position:relative}
+.coin-ic{width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fde68a,#f59e0b);display:inline-flex;align-items:center;justify-content:center;color:#7c2d12;font-size:12px;font-weight:800}
+.iconbtn{background:rgba(0,0,0,.35);border:1px solid var(--line);color:#fff;border-radius:999px;padding:6px 11px;font-weight:700;font-size:13px}
+.floatcoin{position:absolute;right:8px;top:-4px;color:var(--gold);font-weight:800;animation:floatUp 1s ease-out forwards;pointer-events:none;text-shadow:0 2px 6px #000}
+@keyframes floatUp{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
+@keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+.pulse{animation:pulse .45s ease}
+.logo{text-align:center;margin:26px 0 4px;font-size:44px;font-weight:800;line-height:1.15;text-shadow:0 4px 18px rgba(34,211,238,.45)}
+.logo .en{display:block;font-family:'Poppins';font-size:19px;letter-spacing:3px;color:var(--cyan);font-weight:700}
+.tagline{text-align:center;color:#c4b5fd;font-size:15px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:14px}
+.btn{display:block;width:100%;padding:15px;border-radius:16px;font-size:18px;font-weight:700;color:#082f3a;background:linear-gradient(180deg,#67e8f9,#06b6d4);box-shadow:0 5px 0 #0e7490,0 10px 18px rgba(0,0,0,.35);margin-bottom:12px;transition:transform .06s}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0e7490}
+.btn.gold{background:linear-gradient(180deg,#fde68a,#f59e0b);color:#451a03;box-shadow:0 5px 0 #b45309,0 10px 18px rgba(0,0,0,.35)}
+.btn.gold:active{box-shadow:0 2px 0 #b45309}
+.btn.purple{background:linear-gradient(180deg,#c4b5fd,#7c3aed);color:#fff;box-shadow:0 5px 0 #5b21b6,0 10px 18px rgba(0,0,0,.35)}
+.btn.purple:active{box-shadow:0 2px 0 #5b21b6}
+.btn.ghost{background:rgba(255,255,255,.1);color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.35);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;filter:grayscale(.5)}
+.btn.small{padding:11px;font-size:15px}
+.namein{width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:#fff;font-size:16px;margin-bottom:12px}
+.worldtitle{font-size:19px;font-weight:800;margin:16px 0 10px;color:var(--cyan)}
+.lgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.lvl{aspect-ratio:1;border-radius:14px;background:linear-gradient(180deg,#164e63,#0e7490);color:#fff;font-weight:800;font-size:17px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(0,0,0,.4);border:1px solid var(--line)}
+.lvl .st{font-size:11px;color:var(--gold);letter-spacing:1px}
+.lvl.boss{background:linear-gradient(180deg,#7c2d12,#b45309)}
+.lvl.lock{background:rgba(255,255,255,.07);color:#94a3b8;box-shadow:none}
+.lvl.done{background:linear-gradient(180deg,#14532d,#16a34a)}
+.qmeta{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#c4b5fd;margin:14px 0 8px;font-weight:600}
+.qcat{background:rgba(34,211,238,.15);border:1px solid var(--cyan);color:var(--cyan);padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.tbar{height:14px;background:rgba(0,0,0,.4);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+.tfill{height:100%;background:linear-gradient(90deg,#22d3ee,#34d399);border-radius:999px;transition:width .1s linear}
+.tfill.low{background:linear-gradient(90deg,#ef4444,#f59e0b)}
+.qtext{font-size:21px;font-weight:700;line-height:1.5;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}
+.opts{display:grid;gap:10px}
+.opt{padding:15px;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid var(--line);color:#fff;font-size:17px;font-weight:600;text-align:left;transition:background .15s}
+.opt:active{transform:scale(.99)}
+.opt.correct{background:#16a34a!important;border-color:#4ade80}
+.opt.wrong{background:#dc2626!important;border-color:#f87171}
+.opt.hide{visibility:hidden}
+.opt:disabled{opacity:.92}
+.lifelines{display:flex;gap:8px;margin-top:14px}
+.life{flex:1;padding:11px 4px;border-radius:12px;background:rgba(0,0,0,.4);border:1px solid var(--gold2);color:#fff;font-size:13px;font-weight:700}
+.life b{color:var(--gold);display:block;font-size:12px;margin-top:2px}
+.life:disabled{opacity:.4;border-color:var(--line)}
+.modal{position:fixed;inset:0;background:rgba(2,6,23,.82);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.open{display:flex}
+.mbox{background:linear-gradient(170deg,#1e1b4b,#312e81);border:1px solid var(--line);border-radius:22px;padding:22px;width:100%;max-width:420px;max-height:88vh;overflow:auto;text-align:center}
+.mbox h2{font-size:26px;margin-bottom:8px}
+.bigstars{font-size:36px;color:var(--gold);letter-spacing:4px;margin:6px 0}
+.pack{display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:10px;width:100%;color:#fff;text-align:left}
+.pack .amt{font-size:20px;font-weight:800}
+.pack .cn{color:var(--gold);font-weight:800;font-size:17px}
+.badge{background:#dc2626;color:#fff;font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}
+.methods{display:flex;gap:8px;margin:10px 0}
+.method{flex:1;padding:12px;border-radius:12px;border:2px solid var(--line);background:rgba(0,0,0,.3);color:#fff;font-weight:800}
+.method.sel{border-color:var(--cyan);background:rgba(34,211,238,.15)}
+label.fl{display:block;text-align:left;font-size:14px;font-weight:600;margin:10px 0 5px;color:#ddd6fe}
+select.namein{appearance:none}
+.warn{background:rgba(220,38,38,.15);border:1px solid #ef4444;color:#fecaca;border-radius:12px;padding:10px;font-size:13.5px;margin:12px 0;line-height:1.5}
+.okmsg{background:rgba(22,163,74,.18);border:1px solid #22c55e;color:#bbf7d0;border-radius:12px;padding:12px;font-size:14.5px;line-height:1.6;display:none}
+.footer{text-align:center;color:#a5b4fc;font-size:12.5px;line-height:1.7;margin-top:22px}
+.footer .brand{color:var(--gold);font-weight:800;font-size:14px}
+.ver{opacity:.65;font-size:11px;margin-top:4px}
+.hidden{display:none!important}
+.reqitem{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:10px;padding:9px;font-size:13px;text-align:left;margin-bottom:8px;word-break:break-all}
+.howto-txt{text-align:left;font-size:15px;line-height:1.75}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hud">
+    <span class="pname" id="hudName">Guest</span>
+    <button class="iconbtn" id="langBtn">EN</button>
+    <button class="iconbtn" id="soundBtn">🔊</button>
+    <div class="coinbox" id="coinBox"><span class="coin-ic">৳</span><span id="coinAmt">100</span></div>
+  </div>
+
+  <!-- HOME -->
+  <section id="scr-home">
+    <div class="logo">মাথা মাস্টার<span class="en">MATHA MASTER</span></div>
+    <div class="tagline" data-i="tagline"></div>
+    <div class="card">
+      <input class="namein" id="nameInput" maxlength="24">
+      <button class="btn" id="playBtn"></button>
+      <button class="btn purple" id="mapBtn"></button>
+      <button class="btn gold" id="buyBtn"></button>
+      <button class="btn ghost" id="dailyBtn"></button>
+      <button class="btn ghost" id="howBtn"></button>
+    </div>
+    <div class="footer">
+      <div class="brand">Songlap</div>
+      <div data-i="disclaimer"></div>
+      <div class="ver" id="verTap">v1.0</div>
+    </div>
+  </section>
+
+  <!-- LEVEL MAP -->
+  <section id="scr-map" class="hidden">
+    <div class="qmeta"><button class="iconbtn" data-back>← <span data-i="home"></span></button><b data-i="chooseLevel"></b><span></span></div>
+    <div id="worlds"></div>
+  </section>
+
+  <!-- GAME -->
+  <section id="scr-game" class="hidden">
+    <div class="qmeta">
+      <span id="qLevel"></span><span class="qcat" id="qCat"></span><span id="qProg"></span>
+    </div>
+    <div class="tbar"><div class="tfill" id="tFill" style="width:100%"></div></div>
+    <div class="qtext" id="qText"></div>
+    <div class="opts" id="qOpts"></div>
+    <div class="lifelines">
+      <button class="life" id="lifeFifty"></button>
+      <button class="life" id="lifeTime"></button>
+      <button class="life" id="lifeSkip"></button>
+    </div>
+    <button class="btn ghost small" id="quitBtn" style="margin-top:14px"></button>
+  </section>
+
+  <!-- BUY COINS -->
+  <section id="scr-buy" class="hidden">
+    <div class="qmeta"><button class="iconbtn" data-back>← <span data-i="home"></span></button><b data-i="buyCoins"></b><span></span></div>
+    <div id="packList"></div>
+    <div class="card">
+      <div style="font-weight:700" data-i="payMethod"></div>
+      <div class="methods">
+        <button class="method sel" data-m="bKash">bKash</button>
+        <button class="method" data-m="Nagad">Nagad</button>
+        <button class="method" data-m="Rocket">Rocket</button>
+      </div>
+      <div id="payNumBox" style="font-size:15px;line-height:1.6"></div>
+      <label class="fl" data-i="fName"></label>
+      <input class="namein" id="fNameIn" maxlength="24">
+      <label class="fl" data-i="fSender"></label>
+      <input class="namein" id="fSenderIn" inputmode="tel" maxlength="15" placeholder="01XXXXXXXXX">
+      <label class="fl" data-i="fTrx"></label>
+      <input class="namein" id="fTrxIn" maxlength="20">
+      <label class="fl" data-i="fPkg"></label>
+      <select class="namein" id="fPkgSel"></select>
+      <div class="warn" data-i="pinWarn"></div>
+      <button class="btn gold" id="reqBtn"></button>
+      <div class="okmsg" id="reqOk"></div>
+    </div>
+  </section>
+</div>
+
+<!-- RESULT MODAL -->
+<div class="modal" id="resultModal"><div class="mbox">
+  <h2 id="resTitle"></h2>
+  <div class="bigstars" id="resStars"></div>
+  <div id="resInfo" style="font-size:16px;line-height:1.7;margin-bottom:14px"></div>
+  <button class="btn gold hidden" id="resPassBuy"></button>
+  <button class="btn hidden" id="resNext"></button>
+  <button class="btn purple" id="resRetry"></button>
+  <button class="btn ghost" id="resMap"></button>
+</div></div>
+
+<!-- HOW TO PLAY MODAL -->
+<div class="modal" id="howModal"><div class="mbox">
+  <h2 data-i="howto"></h2>
+  <div class="howto-txt" data-i="howText"></div>
+  <button class="btn" id="howClose" style="margin-top:14px"></button>
+</div></div>
+
+<!-- ADMIN MODAL -->
+<div class="modal" id="adminModal"><div class="mbox">
+  <h2>Demo Admin (this device only)</h2>
+  <label class="fl">Add coins / কয়েন যোগ করুন</label>
+  <input class="namein" id="admAmt" type="number" placeholder="500">
+  <button class="btn gold" id="admAdd">Add / যোগ করুন</button>
+  <div style="font-weight:700;margin:14px 0 8px;text-align:left">Payment requests / পেমেন্ট অনুরোধ</div>
+  <div id="reqList"></div>
+  <button class="btn purple" id="admReset">Reset all progress / সব রিসেট</button>
+  <button class="btn ghost" id="admClose">Close / বন্ধ</button>
+</div></div>
+
+<script>
+"use strict";
+const PAY_NUMBER = ""; // Owner's bKash/Nagad/Rocket number — set by owner. Empty = coming soon.
+const LS_KEY = "matha_master_v1";
+const REQ_KEY = "mm_requests";
+const PACKS = [
+  {bdt:30, coins:110}, {bdt:60, coins:250, best:true}, {bdt:120, coins:540},
+  {bdt:250, coins:1200}, {bdt:500, coins:2500}
+];
+const PRICE = {fifty:35, time:25, skip:50, passBuy:100};
+const I18N = {
+  bn:{tagline:"ভাবো স্মার্ট করে — প্রতিটা লেভেল জিতো!",play:"▶ খেলুন",levels:"🗺️ লেভেল ম্যাপ",buyCoins:"🪙 কয়েন কিনুন",daily:"🎁 দৈনিক পুরস্কার +৫০",dailyDone:"🎁 আজকের পুরস্কার নেওয়া হয়েছে ✓",howto:"❓ কীভাবে খেলবেন",home:"হোম",chooseLevel:"লেভেল বেছে নিন",namePh:"আপনার নাম লিখুন",guest:"অতিথি",
+  easy:"সহজ",medium:"মাঝারি",hard:"কঠিন",boss:"বস",level:"লেভেল",question:"প্রশ্ন",quit:"✖ ছেড়ে দিন",
+  fifty:"50/50",time:"+১৫ সেকেন্ড",skip:"স্কিপ ⏭",coins:"কয়েন",
+  pass:"🎉 পাস!",fail:"😢 আরেকটু হলেই হতো!",correctTxt:"সঠিক",earned:"এই লেভেলে আয়",next:"পরের লেভেল ➜",retry:"🔁 আবার চেষ্টা করুন",toMap:"🗺️ ম্যাপে যান",passBuy:"💰 ১০০ কয়েনে পাস করুন",
+  payMethod:"পেমেন্ট মাধ্যম বেছে নিন",paySoon:"পেমেন্ট নম্বর শীঘ্রই যোগ করা হবে",payTo:"এই নম্বরে Send Money করুন:",fName:"আপনার নাম",fSender:"যে নম্বর থেকে টাকা পাঠিয়েছেন",fTrx:"ট্রান্সাকশন আইডি (TrxID)",fPkg:"প্যাকেজ",submitReq:"অনুরোধ পাঠান",best:"সেরা অফার",
+  pinWarn:"⚠️ সতর্কতা: আপনার পিন বা ওটিপি কখনো কারো সাথে শেয়ার করবেন না। আমরা কখনো পিন/ওটিপি চাই না।",
+  reqOk:"✅ অনুরোধ পেয়েছি! পেমেন্ট যাচাই করে মালিক আপনার এই ডিভাইসে কয়েন যোগ করে দেবেন। (ডেমো: এই অনুরোধটি শুধু এই ডিভাইসে সংরক্ষিত আছে।)",
+  disclaimer:"কয়েন শুধু গেমের ভিতরে ব্যবহারের জন্য। এর কোনো নগদ মূল্য নেই এবং টাকায় তোলা বা বদলানো যাবে না।",
+  howText:"• প্রতিটি লেভেলে ৫টি প্রশ্ন (বস লেভেলে ৮টি)। সময়ের মধ্যে সঠিক উত্তর দিন।<br>• লেভেল ১–১০ পাস করতে কমপক্ষে ৩টি, লেভেল ১১–৩০ পাস করতে কমপক্ষে ৪টি সঠিক উত্তর লাগবে (বস: ৮টিতে ৬টি)।<br>• সঠিক উত্তরে কয়েন আয় হয়। তারকা: সব সঠিক = ৩★, একটা কম = ২★, পাস = ১★।<br>• লাইফলাইন: 50/50 (৩৫ কয়েন), +১৫ সেকেন্ড (২৫ কয়েন), স্কিপ (৫০ কয়েন)।<br>• প্রতিদিন ফ্রি ৫০ কয়েনের পুরস্কার নিন!<br>• কয়েন কিনতে বিকাশ/নগদ/রকেটে টাকা পাঠিয়ে TrxID জমা দিন। কয়েন শুধু গেমের ভিতরে ব্যবহারের জন্য — টাকায় তোলা যায় না।",
+  close:"বন্ধ করুন",needName:"প্রথমে আপনার নাম লিখুন!",noCoins:"কয়েন যথেষ্ট নেই!",dailyGot:"🎁 +৫০ কয়েন পেয়েছেন!",fillAll:"সব ঘর পূরণ করুন!",cat:{bd:"বাংলাদেশ",world:"বিশ্ব",science:"বিজ্ঞান",sports:"খেলা",history:"ইতিহাস",geo:"ভূগোল",english:"ইংরেজি",math:"গণিত"}},
+  en:{tagline:"Think Smart. Beat Every Level!",play:"▶ Play",levels:"🗺️ Level Map",buyCoins:"🪙 Buy Coins",daily:"🎁 Daily Reward +50",dailyDone:"🎁 Today's reward claimed ✓",howto:"❓ How to Play",home:"Home",chooseLevel:"Choose a Level",namePh:"Enter your name",guest:"Guest",
+  easy:"Easy",medium:"Medium",hard:"Hard",boss:"BOSS",level:"Level",question:"Question",quit:"✖ Quit Level",
+  fifty:"50/50",time:"+15 Seconds",skip:"Skip ⏭",coins:"coins",
+  pass:"🎉 Level Passed!",fail:"😢 So Close!",correctTxt:"Correct",earned:"Earned this level",next:"Next Level ➜",retry:"🔁 Try Again",toMap:"🗺️ Level Map",passBuy:"💰 Pass with 100 coins",
+  payMethod:"Choose payment method",paySoon:"Payment number will be added soon",payTo:"Send Money to this number:",fName:"Your name",fSender:"Sender mobile number (you sent from)",fTrx:"Transaction ID (TrxID)",fPkg:"Package",submitReq:"Send Request",best:"Best Value",
+  pinWarn:"⚠️ Warning: Never share your PIN or OTP with anyone. We never ask for your PIN/OTP.",
+  reqOk:"✅ Request received! After verifying the payment, the owner will add coins on this device. (Demo: this request is stored on this device only.)",
+  disclaimer:"Coins are for in-game use only. They have no cash value and cannot be withdrawn or exchanged for money.",
+  howText:"• Each level has 5 questions (boss levels: 8). Answer correctly before time runs out.<br>• Pass: levels 1–10 need 3+ correct; levels 11–30 need 4+ correct (boss: 6 of 8).<br>• Earn coins for correct answers. Stars: all correct = 3★, one less = 2★, pass = 1★.<br>• Lifelines: 50/50 (35 coins), +15 Seconds (25 coins), Skip (50 coins).<br>• Claim a free +50 coin daily reward every day!<br>• To buy coins, send money via bKash/Nagad/Rocket and submit the TrxID. Coins are for in-game use only — they cannot be withdrawn as money.",
+  close:"Close",needName:"Please enter your name first!",noCoins:"Not enough coins!",dailyGot:"🎁 You got +50 coins!",fillAll:"Please fill in all fields!",cat:{bd:"Bangladesh",world:"World",science:"Science",sports:"Sports",history:"History",geo:"Geography",english:"English",math:"Math"}}
+};
+let S = loadState();
+function loadState(){
+  try{ const s = JSON.parse(localStorage.getItem(LS_KEY)); if(s && typeof s.coins==="number") return s; }catch(e){}
+  return {name:"", lang:"bn", coins:100, unlocked:1, stars:{}, lastDaily:"", sound:true};
+}
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(S)); }
+function t(k){ return I18N[S.lang][k]; }
+function catName(c){ return I18N[S.lang].cat[c] || c; }
+/* ================= QUESTIONS: EASY (45) ================= */
+const QE = [
+{qbn:"বাংলাদেশের রাজধানী কোনটি?",qen:"What is the capital of Bangladesh?",obn:["ঢাকা","চট্টগ্রাম","খুলনা","রাজশাহী"],oen:["Dhaka","Chattogram","Khulna","Rajshahi"],a:0,cat:"bd"},
+{qbn:"বাংলাদেশের জাতীয় পশু কোনটি?",qen:"What is the national animal of Bangladesh?",obn:["হাতি","রয়েল বেঙ্গল টাইগার","হরিণ","বানর"],oen:["Elephant","Royal Bengal Tiger","Deer","Monkey"],a:1,cat:"bd"},
+{qbn:"বাংলাদেশের জাতীয় ফুল কোনটি?",qen:"What is the national flower of Bangladesh?",obn:["গোলাপ","জবা","শাপলা","টগর"],oen:["Rose","Hibiscus","Water Lily","Jasmine"],a:2,cat:"bd"},
+{qbn:"বাংলাদেশের জাতীয় ফল কোনটি?",qen:"What is the national fruit of Bangladesh?",obn:["কাঁঠাল","আম","লিচু","কলা"],oen:["Jackfruit","Mango","Lychee","Banana"],a:0,cat:"bd"},
+{qbn:"বাংলাদেশের জাতীয় মাছ কোনটি?",qen:"What is the national fish of Bangladesh?",obn:["রুই","কাতলা","পাঙ্গাশ","ইলিশ"],oen:["Rui","Catla","Pangas","Hilsa"],a:3,cat:"bd"},
+{qbn:"বাংলাদেশের জাতীয় পাখি কোনটি?",qen:"What is the national bird of Bangladesh?",obn:["কাক","দোয়েল","চড়ুই","ময়না"],oen:["Crow","Magpie Robin","Sparrow","Myna"],a:1,cat:"bd"},
+{qbn:"বাংলাদেশের জাতীয় সংগীতের রচয়িতা কে?",qen:"Who wrote the national anthem of Bangladesh?",obn:["রবীন্দ্রনাথ ঠাকুর","কাজী নজরুল ইসলাম","জসীমউদ্দীন","সুকান্ত ভট্টাচার্য"],oen:["Rabindranath Tagore","Kazi Nazrul Islam","Jasimuddin","Sukanta Bhattacharya"],a:0,cat:"bd"},
+{qbn:"বাংলাদেশের জাতীয় কবি কে?",qen:"Who is the national poet of Bangladesh?",obn:["রবীন্দ্রনাথ ঠাকুর","মাইকেল মধুসূদন দত্ত","কাজী নজরুল ইসলাম","জীবনানন্দ দাশ"],oen:["Rabindranath Tagore","Michael Madhusudan Dutt","Kazi Nazrul Islam","Jibanananda Das"],a:2,cat:"bd"},
+{qbn:"বাংলাদেশের মুদ্রার নাম কী?",qen:"What is the currency of Bangladesh?",obn:["রুপি","টাকা","ডলার","দিনার"],oen:["Rupee","Taka","Dollar","Dinar"],a:1,cat:"bd"},
+{qbn:"বাংলাদেশের স্বাধীনতা দিবস কবে?",qen:"When is the Independence Day of Bangladesh?",obn:["২৬ মার্চ","১৬ ডিসেম্বর","২১ ফেব্রুয়ারি","১৪ এপ্রিল"],oen:["26 March","16 December","21 February","14 April"],a:0,cat:"bd"},
+{qbn:"বাংলাদেশের বিজয় দিবস কবে?",qen:"When is the Victory Day of Bangladesh?",obn:["২৬ মার্চ","২১ ফেব্রুয়ারি","১ জানুয়ারি","১৬ ডিসেম্বর"],oen:["26 March","21 February","1 January","16 December"],a:3,cat:"history"},
+{qbn:"আন্তর্জাতিক মাতৃভাষা দিবস কবে?",qen:"When is International Mother Language Day?",obn:["২৬ মার্চ","২১ ফেব্রুয়ারি","১ মে","১০ ডিসেম্বর"],oen:["26 March","21 February","1 May","10 December"],a:1,cat:"history"},
+{qbn:"বাংলাদেশের জাতীয় খেলা কোনটি?",qen:"What is the national game of Bangladesh?",obn:["ক্রিকেট","কাবাডি (হাডুডু)","ফুটবল","হকি"],oen:["Cricket","Kabaddi (Hadudu)","Football","Hockey"],a:1,cat:"sports"},
+{qbn:"বাংলাদেশের জাতীয় মসজিদ কোনটি?",qen:"What is the national mosque of Bangladesh?",obn:["তারা মসজিদ","ষাট গম্বুজ মসজিদ","বায়তুল মুকাররম","বায়তুল আমান"],oen:["Star Mosque","Sixty Dome Mosque","Baitul Mukarram","Baitul Aman"],a:2,cat:"bd"},
+{qbn:"বাংলাদেশের জাতীয় পতাকার রং কোনগুলো?",qen:"What are the colours of the national flag of Bangladesh?",obn:["সবুজ ও সাদা","সবুজ ও লাল","নীল ও লাল","সবুজ ও হলুদ"],oen:["Green and white","Green and red","Blue and red","Green and yellow"],a:1,cat:"bd"},
+{qbn:"জাপানের রাজধানী কোনটি?",qen:"What is the capital of Japan?",obn:["বেইজিং","সিউল","টোকিও","ব্যাংকক"],oen:["Beijing","Seoul","Tokyo","Bangkok"],a:2,cat:"world"},
+{qbn:"পৃথিবীর সবচেয়ে বড় মহাসাগর কোনটি?",qen:"Which is the largest ocean on Earth?",obn:["প্রশান্ত মহাসাগর","আটলান্টিক মহাসাগর","ভারত মহাসাগর","উত্তর মেরু মহাসাগর"],oen:["Pacific Ocean","Atlantic Ocean","Indian Ocean","Arctic Ocean"],a:0,cat:"geo"},
+{qbn:"ভারতের রাজধানী কোনটি?",qen:"What is the capital of India?",obn:["মুম্বাই","নয়াদিল্লি","কলকাতা","চেন্নাই"],oen:["Mumbai","New Delhi","Kolkata","Chennai"],a:1,cat:"world"},
+{qbn:"যুক্তরাজ্যের রাজধানী কোনটি?",qen:"What is the capital of the United Kingdom?",obn:["প্যারিস","লন্ডন","বার্লিন","রোম"],oen:["Paris","London","Berlin","Rome"],a:1,cat:"world"},
+{qbn:"আইফেল টাওয়ার কোন শহরে?",qen:"In which city is the Eiffel Tower?",obn:["প্যারিস","লন্ডন","নিউইয়র্ক","দুবাই"],oen:["Paris","London","New York","Dubai"],a:0,cat:"world"},
+{qbn:"পানির রাসায়নিক সংকেত কোনটি?",qen:"What is the chemical formula of water?",obn:["H₂O","CO₂","O₂","NaCl"],oen:["H₂O","CO₂","O₂","NaCl"],a:0,cat:"science"},
+{qbn:"সূর্য আসলে কী?",qen:"What is the Sun?",obn:["একটি গ্রহ","একটি ধূমকেতু","একটি তারা","একটি উপগ্রহ"],oen:["A planet","A comet","A star","A moon"],a:2,cat:"science"},
+{qbn:"আমরা কোন গ্রহে বাস করি?",qen:"On which planet do we live?",obn:["পৃথিবী","মঙ্গল","শুক্র","বৃহস্পতি"],oen:["Earth","Mars","Venus","Jupiter"],a:0,cat:"science"},
+{qbn:"পৃথিবীতে মহাদেশ কয়টি?",qen:"How many continents are there on Earth?",obn:["৫টি","৭টি","৬টি","৮টি"],oen:["5","7","6","8"],a:1,cat:"geo"},
+{qbn:"শ্বাসের সাথে আমরা কোন গ্যাস গ্রহণ করি?",qen:"Which gas do we take in when we breathe?",obn:["অক্সিজেন","কার্বন ডাই-অক্সাইড","নাইট্রোজেন","হাইড্রোজেন"],oen:["Oxygen","Carbon dioxide","Nitrogen","Hydrogen"],a:0,cat:"science"},
+{qbn:"পানি কত ডিগ্রি সেলসিয়াসে ফোটে?",qen:"At what temperature (°C) does water boil?",obn:["৯০°C","৮০°C","১১০°C","১০০°C"],oen:["90°C","80°C","110°C","100°C"],a:3,cat:"science"},
+{qbn:"রংধনুতে কয়টি রং থাকে?",qen:"How many colours are there in a rainbow?",obn:["৫টি","৬টি","৭টি","৮টি"],oen:["5","6","7","8"],a:2,cat:"science"},
+{qbn:"ক্রিকেট দলে কতজন খেলোয়াড় থাকে?",qen:"How many players are there in a cricket team?",obn:["৯ জন","১০ জন","১১ জন","১২ জন"],oen:["9","10","11","12"],a:2,cat:"sports"},
+{qbn:"ক্রিকেটে এক ওভারে কয়টি বল থাকে?",qen:"How many balls are there in one cricket over?",obn:["৪টি","৬টি","৫টি","৮টি"],oen:["4","6","5","8"],a:1,cat:"sports"},
+{qbn:"ফুটবল বিশ্বকাপ কত বছর পর পর হয়?",qen:"How often is the FIFA World Cup held?",obn:["২ বছর","৩ বছর","৪ বছর","৫ বছর"],oen:["2 years","3 years","4 years","5 years"],a:2,cat:"sports"},
+{qbn:"টি-টোয়েন্টি ক্রিকেটে প্রতিটি দল কত ওভার খেলে?",qen:"How many overs does each team play in T20 cricket?",obn:["১০ ওভার","২০ ওভার","৫০ ওভার","১৫ ওভার"],oen:["10 overs","20 overs","50 overs","15 overs"],a:1,cat:"sports"},
+{qbn:"৫ + ৭ = কত?",qen:"5 + 7 = ?",obn:["১০","১১","১২","১৩"],oen:["10","11","12","13"],a:2,cat:"math"},
+{qbn:"৯ × ৩ = কত?",qen:"9 × 3 = ?",obn:["২৪","২৭","২১","২৯"],oen:["24","27","21","29"],a:1,cat:"math"},
+{qbn:"১০০ ÷ ১০ = কত?",qen:"100 ÷ 10 = ?",obn:["৫","২০","১০","১৫"],oen:["5","20","10","15"],a:2,cat:"math"},
+{qbn:"১৫ − ৬ = কত?",qen:"15 − 6 = ?",obn:["৭","৮","৯","১০"],oen:["7","8","9","10"],a:2,cat:"math"},
+{qbn:"৫০-এর অর্ধেক কত?",qen:"What is half of 50?",obn:["২০","৩০","১৫","২৫"],oen:["20","30","15","25"],a:3,cat:"math"},
+{qbn:"'Child' শব্দের বহুবচন কোনটি?",qen:"What is the plural of 'child'?",obn:["Children","Childs","Childes","Childrens"],oen:["Children","Childs","Childes","Childrens"],a:0,cat:"english"},
+{qbn:"'Big' শব্দের বিপরীত শব্দ কোনটি?",qen:"What is the opposite of 'big'?",obn:["Large","Huge","Tall","Small"],oen:["Large","Huge","Tall","Small"],a:3,cat:"english"},
+{qbn:"'Go' শব্দের অতীত রূপ কোনটি?",qen:"What is the past tense of 'go'?",obn:["Goed","Went","Gone to","Going"],oen:["Goed","Went","Gone to","Going"],a:1,cat:"english"},
+{qbn:"'Book' শব্দের বাংলা অর্থ কী?",qen:"What does the word 'Book' mean?",obn:["বই","কলম","খাতা","টেবিল"],oen:["Book","Pen","Notebook","Table"],a:0,cat:"english"},
+{qbn:"বাংলাদেশের প্রধান নদী কোনটি?",qen:"Which is the main river of Bangladesh?",obn:["পদ্মা","বুড়িগঙ্গা","কর্ণফুলী","তিস্তা"],oen:["Padma","Buriganga","Karnaphuli","Teesta"],a:0,cat:"geo"},
+{qbn:"মাউন্ট এভারেস্ট কোন দেশে অবস্থিত?",qen:"In which country is Mount Everest located?",obn:["ভারত","চীন","নেপাল","ভুটান"],oen:["India","China","Nepal","Bhutan"],a:2,cat:"geo"},
+{qbn:"বাংলাদেশের সাথে সীমান্ত আছে এমন দেশ কয়টি?",qen:"How many countries share a border with Bangladesh?",obn:["১টি","২টি","৩টি","৪টি"],oen:["1","2","3","4"],a:1,cat:"geo"},
+{qbn:"বাংলাদেশের প্রথম রাষ্ট্রপতি কে?",qen:"Who was the first President of Bangladesh?",obn:["বঙ্গবন্ধু শেখ মুজিবুর রহমান","জিয়াউর রহমান","হুসেইন মুহম্মদ এরশাদ","বিচারপতি আবু সাঈদ চৌধুরী"],oen:["Bangabandhu Sheikh Mujibur Rahman","Ziaur Rahman","Hussain Muhammad Ershad","Justice Abu Sayeed Chowdhury"],a:0,cat:"history"},
+{qbn:"ভাষা আন্দোলন কোন সালে হয়েছিল?",qen:"In which year was the Language Movement?",obn:["১৯৫২","১৯৪৭","১৯৭১","১৯৫৬"],oen:["1952","1947","1971","1956"],a:0,cat:"history"}
+];
+/* ================= QUESTIONS: MEDIUM (40) ================= */
+const QM = [
+{qbn:"মুক্তিযুদ্ধের সময় বাংলাদেশকে কয়টি সেক্টরে ভাগ করা হয়েছিল?",qen:"Into how many sectors was Bangladesh divided during the Liberation War?",obn:["৯টি","১০টি","১১টি","১২টি"],oen:["9","10","11","12"],a:2,cat:"history"},
+{qbn:"কক্সবাজার সমুদ্র সৈকতের দৈর্ঘ্য প্রায় কত কিলোমিটার?",qen:"About how long is Cox's Bazar sea beach?",obn:["৮০ কিমি","১২০ কিমি","১৫০ কিমি","২০০ কিমি"],oen:["80 km","120 km","150 km","200 km"],a:1,cat:"geo"},
+{qbn:"সুন্দরবন কোন ধরনের বন?",qen:"What type of forest is the Sundarbans?",obn:["ম্যানগ্রোভ বন","বৃষ্টিবন","পাতাঝরা বন","কাঁটাবন"],oen:["Mangrove forest","Rainforest","Deciduous forest","Thorn forest"],a:0,cat:"geo"},
+{qbn:"অস্ট্রেলিয়ার রাজধানী কোনটি?",qen:"What is the capital of Australia?",obn:["সিডনি","মেলবোর্ন","ক্যানবেরা","পার্থ"],oen:["Sydney","Melbourne","Canberra","Perth"],a:2,cat:"world"},
+{qbn:"বিশ্বের সবচেয়ে বড় মরুভূমি কোনটি?",qen:"Which is the largest desert in the world?",obn:["গোবি","সাহারা","আরবীয়","কালাহারি"],oen:["Gobi","Sahara","Arabian","Kalahari"],a:1,cat:"geo"},
+{qbn:"সোনার (স্বর্ণের) রাসায়নিক প্রতীক কোনটি?",qen:"What is the chemical symbol for gold?",obn:["Ag","Fe","Gd","Au"],oen:["Ag","Fe","Gd","Au"],a:3,cat:"science"},
+{qbn:"আলোর গতি প্রতি সেকেন্ডে প্রায় কত?",qen:"About how fast does light travel per second?",obn:["প্রায় ৩ লাখ কিমি","প্রায় ৩০ হাজার কিমি","প্রায় ৩ হাজার কিমি","প্রায় ৩০ লাখ কিমি"],oen:["About 300,000 km","About 30,000 km","About 3,000 km","About 3,000,000 km"],a:0,cat:"science"},
+{qbn:"প্রাপ্তবয়স্ক মানুষের শরীরে হাড়ের সংখ্যা কত?",qen:"How many bones are there in an adult human body?",obn:["১৯৬টি","২০৬টি","২১৬টি","২২৬টি"],oen:["196","206","216","226"],a:1,cat:"science"},
+{qbn:"কোষের 'পাওয়ার হাউস' কাকে বলা হয়?",qen:"Which part of the cell is called the 'powerhouse'?",obn:["নিউক্লিয়াস","রাইবোজোম","মাইটোকন্ড্রিয়া","গলজি বস্তু"],oen:["Nucleus","Ribosome","Mitochondria","Golgi body"],a:2,cat:"science"},
+{qbn:"দ্বিতীয় বিশ্বযুদ্ধ শেষ হয় কত সালে?",qen:"In which year did World War II end?",obn:["১৯৪৫","১৯৩৯","১৯৫০","১৯৪২"],oen:["1945","1939","1950","1942"],a:0,cat:"history"},
+{qbn:"চাঁদে প্রথম পা রাখেন কে?",qen:"Who was the first person to walk on the Moon?",obn:["ইউরি গ্যাগারিন","বাজ অলড্রিন","মাইকেল কলিন্স","নিল আর্মস্ট্রং"],oen:["Yuri Gagarin","Buzz Aldrin","Michael Collins","Neil Armstrong"],a:3,cat:"history"},
+{qbn:"আয়তনে বিশ্বের সবচেয়ে বড় দেশ কোনটি?",qen:"Which is the largest country in the world by area?",obn:["চীন","রাশিয়া","কানাডা","যুক্তরাষ্ট্র"],oen:["China","Russia","Canada","USA"],a:1,cat:"world"},
+{qbn:"নীল নদ কোন মহাদেশে অবস্থিত?",qen:"On which continent is the Nile River located?",obn:["আফ্রিকা","এশিয়া","দক্ষিণ আমেরিকা","ইউরোপ"],oen:["Africa","Asia","South America","Europe"],a:0,cat:"geo"},
+{qbn:"প্রথম ক্রিকেট বিশ্বকাপ অনুষ্ঠিত হয় কত সালে?",qen:"In which year was the first Cricket World Cup held?",obn:["১৯৭৯","১৯৮৩","১৯৭৫","১৯৭১"],oen:["1979","1983","1975","1971"],a:2,cat:"sports"},
+{qbn:"বাংলাদেশ প্রথম টেস্ট ম্যাচ খেলে কত সালে?",qen:"In which year did Bangladesh play its first Test match?",obn:["১৯৯৯","২০০০","১৯৯৭","২০০৩"],oen:["1999","2000","1997","2003"],a:1,cat:"sports"},
+{qbn:"অলিম্পিক পতাকায় কয়টি বলয় (রিং) থাকে?",qen:"How many rings are there on the Olympic flag?",obn:["৫টি","৪টি","৬টি","৭টি"],oen:["5","4","6","7"],a:0,cat:"sports"},
+{qbn:"ফুটবলে স্বাভাবিক সময়ে খেলা হয় কত মিনিট?",qen:"How many minutes is a normal football match?",obn:["৮০ মিনিট","১০০ মিনিট","৯০ মিনিট","৭০ মিনিট"],oen:["80 minutes","100 minutes","90 minutes","70 minutes"],a:2,cat:"sports"},
+{qbn:"ক্রিকেটে 'LBW'-এর পূর্ণরূপ কী?",qen:"What is the full form of 'LBW' in cricket?",obn:["Leg Before Wicket","Leg Behind Wicket","Late Ball Wicket","Leg Ball Wide"],oen:["Leg Before Wicket","Leg Behind Wicket","Late Ball Wicket","Leg Ball Wide"],a:0,cat:"sports"},
+{qbn:"জাতীয় সংসদ ভবনের স্থপতি কে?",qen:"Who was the architect of the National Parliament House of Bangladesh?",obn:["মাজহারুল ইসলাম","লুই আই কান","এফ. আর. খান","নভেরা আহমেদ"],oen:["Mazharul Islam","Louis I. Kahn","F. R. Khan","Novera Ahmed"],a:1,cat:"bd"},
+{qbn:"বাংলাদেশের সংবিধান গৃহীত হয় কত সালে?",qen:"In which year was the Constitution of Bangladesh adopted?",obn:["১৯৭১","১৯৭২","১৯৭৩","১৯৭৫"],oen:["1971","1972","1973","1975"],a:1,cat:"history"},
+{qbn:"জাপানের মুদ্রার নাম কী?",qen:"What is the currency of Japan?",obn:["ইউয়ান","ওন","ইয়েন","রিংগিত"],oen:["Yuan","Won","Yen","Ringgit"],a:2,cat:"world"},
+{qbn:"উদ্ভিদ কোন প্রক্রিয়ায় খাদ্য তৈরি করে?",qen:"By which process do plants make food?",obn:["শ্বসন","সালোকসংশ্লেষণ","বাষ্পীভবন","পরাগায়ন"],oen:["Respiration","Photosynthesis","Evaporation","Pollination"],a:1,cat:"science"},
+{qbn:"পৃথিবী সূর্যের চারদিকে একবার ঘুরতে কত দিন লাগে?",qen:"How many days does Earth take to orbit the Sun once?",obn:["৩৬০ দিন","৩৬৫ দিন","৩০০ দিন","৪০০ দিন"],oen:["360 days","365 days","300 days","400 days"],a:1,cat:"science"},
+{qbn:"সূর্যের আলো থেকে আমরা কোন ভিটামিন পাই?",qen:"Which vitamin do we get from sunlight?",obn:["ভিটামিন A","ভিটামিন B","ভিটামিন C","ভিটামিন D"],oen:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"],a:3,cat:"science"},
+{qbn:"উদ্ভিদ বাতাস থেকে কোন গ্যাস শোষণ করে?",qen:"Which gas do plants absorb from the air?",obn:["অক্সিজেন","কার্বন ডাই-অক্সাইড","নাইট্রোজেন","হিলিয়াম"],oen:["Oxygen","Carbon dioxide","Nitrogen","Helium"],a:1,cat:"science"},
+{qbn:"প্রথম বিশ্বযুদ্ধ শুরু হয় কত সালে?",qen:"In which year did World War I begin?",obn:["১৯১৪","১৯১৮","১৯০৫","১৯২০"],oen:["1914","1918","1905","1920"],a:0,cat:"history"},
+{qbn:"কানাডার রাজধানী কোনটি?",qen:"What is the capital of Canada?",obn:["টরন্টো","ভ্যাঙ্কুভার","অটোয়া","মন্ট্রিয়ল"],oen:["Toronto","Vancouver","Ottawa","Montreal"],a:2,cat:"world"},
+{qbn:"আমাজন রেইনফরেস্টের বেশিরভাগ অংশ কোন দেশে?",qen:"Most of the Amazon rainforest is in which country?",obn:["পেরু","ব্রাজিল","কলম্বিয়া","ভেনেজুয়েলা"],oen:["Peru","Brazil","Colombia","Venezuela"],a:1,cat:"geo"},
+{qbn:"পদ্মা নদী কোন দেশ থেকে বাংলাদেশে প্রবেশ করেছে?",qen:"From which country does the Padma River enter Bangladesh?",obn:["ভারত","নেপাল","চীন","মিয়ানমার"],oen:["India","Nepal","China","Myanmar"],a:0,cat:"geo"},
+{qbn:"১২ × ৮ = কত?",qen:"12 × 8 = ?",obn:["৮৬","৯৬","১০৬","৯২"],oen:["86","96","106","92"],a:1,cat:"math"},
+{qbn:"১৪৪-এর বর্গমূল কত?",qen:"What is the square root of 144?",obn:["১২","১৪","১৬","১১"],oen:["12","14","16","11"],a:0,cat:"math"},
+{qbn:"২০০-এর ২৫% = কত?",qen:"25% of 200 = ?",obn:["২৫","৭৫","৫০","১০০"],oen:["25","75","50","100"],a:2,cat:"math"},
+{qbn:"ত্রিভুজের তিন কোণের সমষ্টি কত ডিগ্রি?",qen:"What is the sum of the three angles of a triangle?",obn:["১৮০°","৯০°","২৭০°","৩৬০°"],oen:["180°","90°","270°","360°"],a:0,cat:"math"},
+{qbn:"নিচের কোনটি মৌলিক সংখ্যা (প্রাইম)?",qen:"Which of the following is a prime number?",obn:["২১","২৭","২৯","৩৩"],oen:["21","27","29","33"],a:2,cat:"math"},
+{qbn:"'Happy' শব্দের সমার্থক শব্দ কোনটি?",qen:"Which word is a synonym of 'happy'?",obn:["Sad","Joyful","Angry","Tired"],oen:["Sad","Joyful","Angry","Tired"],a:1,cat:"english"},
+{qbn:"শূন্যস্থানে সঠিক শব্দ বসান: He ___ to school every day.",qen:"Fill in the blank: He ___ to school every day.",obn:["goes","go","going","gone"],oen:["goes","go","going","gone"],a:0,cat:"english"},
+{qbn:"'Hamlet' নাটকের লেখক কে?",qen:"Who wrote the play 'Hamlet'?",obn:["চার্লস ডিকেন্স","জন মিল্টন","জেন অস্টেন","উইলিয়াম শেক্সপিয়ার"],oen:["Charles Dickens","John Milton","Jane Austen","William Shakespeare"],a:3,cat:"english"},
+{qbn:"'Teach' শব্দের অতীত রূপ কোনটি?",qen:"What is the past tense of 'teach'?",obn:["Teached","Teaching","Teach","Taught"],oen:["Teached","Teaching","Teach","Taught"],a:3,cat:"english"},
+{qbn:"'Foot' শব্দের বহুবচন কোনটি?",qen:"What is the plural of 'foot'?",obn:["Foots","Feet","Footes","Feten"],oen:["Foots","Feet","Footes","Feten"],a:1,cat:"english"},
+{qbn:"বাংলাদেশের জাতীয় সংসদে মোট আসন সংখ্যা কত?",qen:"How many seats are there in total in the National Parliament of Bangladesh?",obn:["৩০০","৩৫০","৪০০","৩৩০"],oen:["300","350","400","330"],a:1,cat:"bd"}
+];
+/* ================= QUESTIONS: HARD (40) ================= */
+const QH = [
+{qbn:"মুক্তিযুদ্ধের সর্বোচ্চ রাষ্ট্রীয় খেতাব কোনটি?",qen:"What is the highest gallantry award of the Liberation War?",obn:["বীরশ্রেষ্ঠ","বীর উত্তম","বীর বিক্রম","বীর প্রতীক"],oen:["Bir Shreshtha","Bir Uttam","Bir Bikrom","Bir Protik"],a:0,cat:"bd"},
+{qbn:"কতজন বীরশ্রেষ্ঠ খেতাব পেয়েছেন?",qen:"How many freedom fighters received the title Bir Shreshtha?",obn:["৫ জন","৭ জন","৯ জন","১১ জন"],oen:["5","7","9","11"],a:1,cat:"bd"},
+{qbn:"বাংলাদেশের প্রথম সাধারণ নির্বাচন অনুষ্ঠিত হয় কত সালে?",qen:"In which year was the first general election of Bangladesh held?",obn:["১৯৭২","১৯৭৪","১৯৭৩","১৯৭৯"],oen:["1972","1974","1973","1979"],a:2,cat:"history"},
+{qbn:"শহীদ মিনারের স্থপতি (ভাস্কর) কে?",qen:"Who was the sculptor/architect of the Shaheed Minar?",obn:["জয়নুল আবেদিন","কামরুল হাসান","নভেরা আহমেদ","হামিদুর রহমান"],oen:["Zainul Abedin","Quamrul Hassan","Novera Ahmed","Hamidur Rahman"],a:3,cat:"bd"},
+{qbn:"কার্বনের পারমাণবিক সংখ্যা কত?",qen:"What is the atomic number of carbon?",obn:["৮","৬","১২","১৪"],oen:["8","6","12","14"],a:1,cat:"science"},
+{qbn:"DNA-এর ডাবল হেলিক্স মডেল কারা আবিষ্কার করেন?",qen:"Who discovered the double-helix model of DNA?",obn:["ডারউইন ও ল্যামার্ক","নিউটন ও গ্যালিলিও","ওয়াটসন ও ক্রিক","মেন্ডেল ও পাস্তুর"],oen:["Darwin and Lamarck","Newton and Galileo","Watson and Crick","Mendel and Pasteur"],a:2,cat:"science"},
+{qbn:"হিরোশিমায় পারমাণবিক বোমা ফেলা হয় কবে?",qen:"When was the atomic bomb dropped on Hiroshima?",obn:["৬ আগস্ট ১৯৪৫","৯ আগস্ট ১৯৪৫","২ সেপ্টেম্বর ১৯৪৫","৭ ডিসেম্বর ১৯৪১"],oen:["6 August 1945","9 August 1945","2 September 1945","7 December 1941"],a:0,cat:"history"},
+{qbn:"বিশ্বের সবচেয়ে ছোট দেশ কোনটি?",qen:"Which is the smallest country in the world?",obn:["মোনাকো","মালদ্বীপ","সান মারিনো","ভ্যাটিকান সিটি"],oen:["Monaco","Maldives","San Marino","Vatican City"],a:3,cat:"world"},
+{qbn:"কাজাখস্তানের রাজধানী কোনটি?",qen:"What is the capital of Kazakhstan?",obn:["আলমাটি","আস্তানা","বিশকেক","তাসখন্দ"],oen:["Almaty","Astana","Bishkek","Tashkent"],a:1,cat:"world"},
+{qbn:"মঙ্গোলিয়ার রাজধানী কোনটি?",qen:"What is the capital of Mongolia?",obn:["বেইজিং","সিউল","কাঠমান্ডু","উলানবাটোর"],oen:["Beijing","Seoul","Kathmandu","Ulaanbaatar"],a:3,cat:"world"},
+{qbn:"৩০০-এর ১৫% = কত?",qen:"15% of 300 = ?",obn:["৩০","৪৫","৬০","১৫"],oen:["30","45","60","15"],a:1,cat:"math"},
+{qbn:"৪৭-এর পরের মৌলিক সংখ্যা কোনটি?",qen:"Which is the next prime number after 47?",obn:["৪৯","৫১","৫৩","৫৭"],oen:["49","51","53","57"],a:2,cat:"math"},
+{qbn:"π (পাই)-এর মান দুই দশমিক স্থান পর্যন্ত কত?",qen:"What is the value of π (pi) to two decimal places?",obn:["৩.১২","৩.১৪","৩.১৬","৩.১৮"],oen:["3.12","3.14","3.16","3.18"],a:1,cat:"math"},
+{qbn:"১০, ২০, ৩০, ৪০ — এই সংখ্যাগুলোর গড় কত?",qen:"What is the average of 10, 20, 30 and 40?",obn:["২০","২২","২৫","৩০"],oen:["20","22","25","30"],a:2,cat:"math"},
+{qbn:"সব বাহু সমান এমন ত্রিভুজকে কী বলে?",qen:"What is a triangle with all sides equal called?",obn:["সমদ্বিবাহু","সমবাহু","বিষমবাহু","সমকোণী"],oen:["Isosceles","Equilateral","Scalene","Right-angled"],a:1,cat:"math"},
+{qbn:"'Omnipresent' শব্দের অর্থ কী?",qen:"What does the word 'omnipresent' mean?",obn:["সর্বশক্তিমান","সবজান্তা","খুব প্রাচীন","সর্বত্র বিরাজমান"],oen:["All-powerful","All-knowing","Very ancient","Present everywhere"],a:3,cat:"english"},
+{qbn:"'Pride and Prejudice' উপন্যাসের লেখক কে?",qen:"Who wrote the novel 'Pride and Prejudice'?",obn:["জেন অস্টেন","শার্লট ব্রন্টে","চার্লস ডিকেন্স","ভার্জিনিয়া উলফ"],oen:["Jane Austen","Charlotte Brontë","Charles Dickens","Virginia Woolf"],a:0,cat:"english"},
+{qbn:"শূন্যস্থানে সঠিক শব্দ বসান: He has been working here ___ 2010.",qen:"Fill in the blank: He has been working here ___ 2010.",obn:["since","for","from","at"],oen:["since","for","from","at"],a:0,cat:"english"},
+{qbn:"'Break the ice' বাগধারাটির অর্থ কী?",qen:"What does the idiom 'break the ice' mean?",obn:["বরফ ভাঙা","ঝগড়া শুরু করা","কথোপকথন শুরু করা","খেলা শেষ করা"],oen:["To break frozen water","To start a fight","To start a conversation","To end a game"],a:2,cat:"english"},
+{qbn:"টেস্ট ক্রিকেটে সর্বোচ্চ রান সংগ্রাহক কে?",qen:"Who has scored the most runs in Test cricket?",obn:["রিকি পন্টিং","শচীন টেন্ডুলকার","জ্যাক ক্যালিস","রাহুল দ্রাবিড়"],oen:["Ricky Ponting","Sachin Tendulkar","Jacques Kallis","Rahul Dravid"],a:1,cat:"sports"},
+{qbn:"বাংলাদেশ আইসিসি ট্রফি জেতে কত সালে?",qen:"In which year did Bangladesh win the ICC Trophy?",obn:["১৯৯৫","১৯৯৯","১৯৯৭","২০০১"],oen:["1995","1999","1997","2001"],a:2,cat:"sports"},
+{qbn:"প্রথম আধুনিক অলিম্পিক গেমস অনুষ্ঠিত হয় কত সালে?",qen:"In which year were the first modern Olympic Games held?",obn:["১৮৯৬","১৯০০","১৯০৪","১৮৮৮"],oen:["1896","1900","1904","1888"],a:0,cat:"sports"},
+{qbn:"২০১৯ ক্রিকেট বিশ্বকাপ জিতেছিল কোন দল?",qen:"Which team won the 2019 Cricket World Cup?",obn:["ভারত","অস্ট্রেলিয়া","নিউজিল্যান্ড","ইংল্যান্ড"],oen:["India","Australia","New Zealand","England"],a:3,cat:"sports"},
+{qbn:"প্রকৃতির সবচেয়ে কঠিন পদার্থ কোনটি?",qen:"What is the hardest natural substance?",obn:["লোহা","হীরা","কোয়ার্টজ","টাইটানিয়াম"],oen:["Iron","Diamond","Quartz","Titanium"],a:1,cat:"science"},
+{qbn:"সোডিয়ামের রাসায়নিক প্রতীক কোনটি?",qen:"What is the chemical symbol for sodium?",obn:["So","Sd","Na","S"],oen:["So","Sd","Na","S"],a:2,cat:"science"},
+{qbn:"বলের একক (unit) কোনটি?",qen:"What is the unit of force?",obn:["নিউটন","জুল","ওয়াট","পাসকাল"],oen:["Newton","Joule","Watt","Pascal"],a:0,cat:"science"},
+{qbn:"ইলেকট্রন আবিষ্কার করেন কে?",qen:"Who discovered the electron?",obn:["রাদারফোর্ড","বোর","জে. জে. থমসন","ডাল্টন"],oen:["Rutherford","Bohr","J. J. Thomson","Dalton"],a:2,cat:"science"},
+{qbn:"বাতাসে শব্দের গতি প্রতি সেকেন্ডে প্রায় কত?",qen:"About how fast does sound travel in air per second?",obn:["৩৪৩ মিটার","১৫০ মিটার","১০০০ মিটার","৩০০০ মিটার"],oen:["343 metres","150 metres","1000 metres","3000 metres"],a:0,cat:"science"},
+{qbn:"বিশুদ্ধ পানির pH মান কত?",qen:"What is the pH of pure water?",obn:["৭","১","১৪","৫"],oen:["7","1","14","5"],a:0,cat:"science"},
+{qbn:"মুঘল সাম্রাজ্যের প্রতিষ্ঠাতা কে?",qen:"Who founded the Mughal Empire?",obn:["আকবর","বাবর","হুমায়ুন","শাহজাহান"],oen:["Akbar","Babur","Humayun","Shah Jahan"],a:1,cat:"history"},
+{qbn:"ফরাসি বিপ্লব সংঘটিত হয় কত সালে?",qen:"In which year was the French Revolution?",obn:["১৭৮৯","১৭৭৬","১৮০৫","১৭৫০"],oen:["1789","1776","1805","1750"],a:0,cat:"history"},
+{qbn:"ছাপাখানা (মুদ্রণযন্ত্র) আবিষ্কার করেন কে?",qen:"Who invented the printing press?",obn:["টমাস এডিসন","আইজ্যাক নিউটন","আলেকজান্ডার গ্রাহাম বেল","ইয়োহানেস গুটেনবার্গ"],oen:["Thomas Edison","Isaac Newton","Alexander Graham Bell","Johannes Gutenberg"],a:3,cat:"history"},
+{qbn:"দানিয়ুব নদী কোন সাগরে গিয়ে মিশেছে?",qen:"Into which sea does the Danube River flow?",obn:["ভূমধ্যসাগর","ক্যাস্পিয়ান সাগর","কৃষ্ণ সাগর","বাল্টিক সাগর"],oen:["Mediterranean Sea","Caspian Sea","Black Sea","Baltic Sea"],a:2,cat:"geo"},
+{qbn:"মাউন্ট কিলিমাঞ্জারো কোন দেশে অবস্থিত?",qen:"In which country is Mount Kilimanjaro located?",obn:["কেনিয়া","তানজানিয়া","ইথিওপিয়া","উগান্ডা"],oen:["Kenya","Tanzania","Ethiopia","Uganda"],a:1,cat:"geo"},
+{qbn:"পৃথিবীর গভীরতম মহাসাগরীয় খাত কোনটি?",qen:"What is the deepest oceanic trench on Earth?",obn:["মারিয়ানা খাত","টোঙ্গা খাত","জাভা খাত","পুয়ের্তো রিকো খাত"],oen:["Mariana Trench","Tonga Trench","Java Trench","Puerto Rico Trench"],a:0,cat:"geo"},
+{qbn:"নিউজিল্যান্ডের রাজধানী কোনটি?",qen:"What is the capital of New Zealand?",obn:["অকল্যান্ড","ক্রাইস্টচার্চ","ওয়েলিংটন","হ্যামিল্টন"],oen:["Auckland","Christchurch","Wellington","Hamilton"],a:2,cat:"world"},
+{qbn:"চীনের মুদ্রার নাম কী?",qen:"What is the currency of China?",obn:["ইয়েন","ওন","ইউয়ান","ডলার"],oen:["Yen","Won","Yuan","Dollar"],a:2,cat:"world"},
+{qbn:"বাংলা নববর্ষ (পহেলা বৈশাখ) ইংরেজি ক্যালেন্ডারের কোন তারিখে পালিত হয়?",qen:"On which date of the English calendar is Pohela Boishakh celebrated?",obn:["১৪ এপ্রিল","১ জানুয়ারি","২১ ফেব্রুয়ারি","১৫ আগস্ট"],oen:["14 April","1 January","21 February","15 August"],a:0,cat:"bd"},
+{qbn:"ঢাকা প্রথম বাংলার রাজধানী হয় কত সালে?",qen:"In which year did Dhaka first become the capital of Bengal?",obn:["১৬০৮","১৬১০","১৬৬০","১৭৫৭"],oen:["1608","1610","1660","1757"],a:1,cat:"history"},
+{qbn:"আয়তনে বাংলাদেশের সবচেয়ে বড় জেলা কোনটি?",qen:"Which is the largest district of Bangladesh by area?",obn:["ঢাকা","রাঙ্গামাটি","চট্টগ্রাম","খুলনা"],oen:["Dhaka","Rangamati","Chattogram","Khulna"],a:1,cat:"geo"}
+];
+/* ================= NUMBER-SEQUENCE GENERATOR ================= */
+function ri(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function genSequence(){
+  const kind = ri(0,2); let seq=[], ans=0;
+  if(kind===0){ const s=ri(2,40), d=ri(2,12); for(let i=0;i<4;i++) seq.push(s+d*i); ans=s+d*4; }
+  else if(kind===1){ const s=ri(1,6), r=ri(2,3); for(let i=0;i<4;i++) seq.push(s*Math.pow(r,i)); ans=s*Math.pow(r,4); }
+  else { const s=ri(1,20); let d=ri(1,4); const inc=ri(1,2); seq.push(s); let cur=s; for(let i=0;i<3;i++){ cur+=d; seq.push(cur); d+=inc; } ans=cur+d; }
+  const cand = new Set([ans]);
+  while(cand.size<4){ const v = ans + [ri(-10,-1),ri(1,10),ri(-3,3),ans][ri(0,3)]; if(v>0 && v!==ans) cand.add(v); }
+  const opts = shuffle([...cand]);
+  const txt = seq.join(", ") + ", ?";
+  return { qbn:"ক্রমটির পরের সংখ্যা কোনটি? "+txt, qen:"What is the next number in the sequence? "+txt,
+           obn:opts.map(String), oen:opts.map(String), a:opts.indexOf(ans), cat:"math", gen:true };
+}
+
+/* ================= AUDIO ================= */
+let AC=null;
+function beep(freq,dur,type,delay){
+  if(!S.sound) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(), g=AC.createGain(), t0=AC.currentTime+(delay||0);
+    o.type=type||"sine"; o.frequency.value=freq;
+    g.gain.setValueAtTime(.16,t0); g.gain.exponentialRampToValueAtTime(.001,t0+dur);
+    o.connect(g); g.connect(AC.destination); o.start(t0); o.stop(t0+dur);
+  }catch(e){}
+}
+const sndClick=()=>beep(620,.07,"triangle");
+const sndGood=()=>{ beep(660,.1,"sine"); beep(880,.14,"sine",.09); };
+const sndBad=()=>beep(170,.25,"sawtooth");
+const sndWin=()=>{ [523,659,784,1046].forEach((f,i)=>beep(f,.16,"triangle",i*.11)); };
+
+/* ================= UI HELPERS ================= */
+const $=id=>document.getElementById(id);
+const SCREENS=["scr-home","scr-map","scr-game","scr-buy"];
+function show(id){ SCREENS.forEach(s=>$(s).classList.toggle("hidden", s!==id)); window.scrollTo(0,0); }
+function applyI18n(){
+  document.querySelectorAll("[data-i]").forEach(el=>{ const k=el.getAttribute("data-i"); if(I18N[S.lang][k]!==undefined) el.innerHTML=I18N[S.lang][k]; });
+  $("langBtn").textContent = S.lang==="bn" ? "EN" : "বাং";
+  $("soundBtn").textContent = S.sound ? "🔊" : "🔇";
+  $("nameInput").placeholder = t("namePh");
+  $("playBtn").textContent = t("play");
+  $("mapBtn").textContent = t("levels");
+  $("buyBtn").textContent = t("buyCoins");
+  $("howBtn").textContent = t("howto");
+  $("howClose").textContent = t("close");
+  $("quitBtn").textContent = t("quit");
+  $("reqBtn").textContent = t("submitReq");
+  updateDailyBtn(); updateHUD();
+}
+function updateHUD(){
+  $("hudName").textContent = S.name || t("guest");
+  $("coinAmt").textContent = S.coins;
+}
+function coinAnim(txt){
+  const s=document.createElement("span"); s.className="floatcoin"; s.textContent=txt;
+  $("coinBox").appendChild(s); $("coinBox").classList.remove("pulse"); void $("coinBox").offsetWidth; $("coinBox").classList.add("pulse");
+  setTimeout(()=>s.remove(),1000);
+}
+function addCoins(n){ S.coins+=n; save(); updateHUD(); if(n>0) coinAnim("+"+n); }
+function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function updateDailyBtn(){
+  const b=$("dailyBtn");
+  if(S.lastDaily===todayStr()){ b.textContent=t("dailyDone"); b.disabled=true; }
+  else { b.textContent=t("daily"); b.disabled=false; }
+}
+
+/* ================= LEVEL CONFIG ================= */
+function tierOf(lv){ return lv<=10?0 : lv<=20?1 : 2; }
+function isBoss(lv){ return lv%10===0; }
+function poolOf(lv){ return tierOf(lv)===0?QE : tierOf(lv)===1?QM : QH; }
+function timeOf(lv){ if(isBoss(lv)) return 18; return [30,25,20][tierOf(lv)]; }
+function needOf(lv){ if(isBoss(lv)) return 6; return lv<=10?3:4; }
+function totalOf(lv){ return isBoss(lv)?8:5; }
+function earnOf(lv){ return [10,15,20][tierOf(lv)]; }
+function bonusOf(lv){ if(isBoss(lv)) return 100; return [20,30,50][tierOf(lv)]; }
+
+/* ================= LEVEL MAP ================= */
+function renderMap(){
+  const w=$("worlds"); w.innerHTML="";
+  const names=[t("easy"),t("medium"),t("hard")];
+  for(let wi=0; wi<3; wi++){
+    const h=document.createElement("div"); h.className="worldtitle";
+    h.textContent = (wi===0?"🌱":wi===1?"🔥":"💀")+" "+names[wi]+" • "+t("level")+" "+(wi*10+1)+"–"+(wi*10+10);
+    w.appendChild(h);
+    const g=document.createElement("div"); g.className="lgrid";
+    for(let lv=wi*10+1; lv<=wi*10+10; lv++){
+      const b=document.createElement("button");
+      const locked = lv>S.unlocked, st=S.stars[lv]||0;
+      b.className="lvl"+(isBoss(lv)?" boss":"")+(locked?" lock":st>0?" done":"");
+      b.innerHTML = locked ? "🔒" : lv + '<span class="st">'+"★".repeat(st)+"☆".repeat(3-st)+"</span>" + (isBoss(lv)?'<span class="st">👑</span>':"");
+      if(!locked) b.onclick=()=>{ sndClick(); startLevel(lv); };
+      g.appendChild(b);
+    }
+    w.appendChild(g);
+  }
+}
+
+/* ================= GAME ENGINE ================= */
+let G=null, timerInt=null;
+function buildQuestions(lv){
+  const total=totalOf(lv), pool=shuffle(poolOf(lv));
+  let seqCount = tierOf(lv)===0 ? 0 : Math.round(total*0.3);
+  const qs = pool.slice(0, total-seqCount);
+  while(qs.length<total) qs.push(genSequence());
+  return shuffle(qs);
+}
+function startLevel(lv){
+  if(!S.name){ const v=$("nameInput").value.trim(); if(!v){ alert(t("needName")); show("scr-home"); $("nameInput").focus(); return; } S.name=v; save(); }
+  G={ lv, qs:buildQuestions(lv), idx:0, correct:0, earned:0, timeLeft:0, locked:false, fiftyUsed:false };
+  show("scr-game"); nextQuestion();
+}
+function stopTimer(){ if(timerInt){ clearInterval(timerInt); timerInt=null; } }
+function nextQuestion(){
+  stopTimer();
+  if(G.idx>=G.qs.length){ endLevel(); return; }
+  G.locked=false; G.fiftyUsed=false;
+  const q=G.qs[G.idx];
+  $("qLevel").textContent = t("level")+" "+G.lv+(isBoss(G.lv)?" 👑":"");
+  $("qCat").textContent = catName(q.cat);
+  $("qProg").textContent = t("question")+" "+(G.idx+1)+"/"+G.qs.length;
+  $("qText").textContent = S.lang==="bn" ? q.qbn : q.qen;
+  const box=$("qOpts"); box.innerHTML="";
+  const opts = S.lang==="bn" ? q.obn : q.oen;
+  opts.forEach((txt,i)=>{
+    const b=document.createElement("button"); b.className="opt"; b.textContent=txt; b.dataset.i=i;
+    b.onclick=()=>answer(i,b); box.appendChild(b);
+  });
+  updateLifelines();
+  G.timeLeft=timeOf(G.lv); drawTimer();
+  timerInt=setInterval(()=>{ G.timeLeft=Math.max(0, G.timeLeft-0.1); drawTimer(); if(G.timeLeft<=0){ stopTimer(); onTimeout(); } },100);
+}
+function drawTimer(){
+  const total=timeOf(G.lv), pct=(G.timeLeft/total)*100;
+  const f=$("tFill"); f.style.width=pct+"%"; f.classList.toggle("low", G.timeLeft<=5);
+}
+function markCorrectBtn(){
+  const q=G.qs[G.idx];
+  document.querySelectorAll("#qOpts .opt").forEach(b=>{ b.disabled=true; if(+b.dataset.i===q.a) b.classList.add("correct"); });
+}
+function answer(i,btn){
+  if(G.locked) return; G.locked=true; stopTimer();
+  const q=G.qs[G.idx];
+  if(i===q.a){ btn.classList.add("correct"); sndGood(); const e=earnOf(G.lv); G.correct++; G.earned+=e; addCoins(e); }
+  else { btn.classList.add("wrong"); markCorrectBtn(); sndBad(); }
+  document.querySelectorAll("#qOpts .opt").forEach(b=>b.disabled=true);
+  setTimeout(()=>{ G.idx++; nextQuestion(); }, 950);
+}
+function onTimeout(){
+  if(G.locked) return; G.locked=true; markCorrectBtn(); sndBad();
+  setTimeout(()=>{ G.idx++; nextQuestion(); }, 950);
+}
+function updateLifelines(){
+  const q=G.qs[G.idx];
+  const lf=$("lifeFifty"), lt=$("lifeTime"), ls=$("lifeSkip");
+  lf.innerHTML = t("fifty")+"<b>🪙 "+PRICE.fifty+"</b>";
+  lt.innerHTML = t("time")+"<b>🪙 "+PRICE.time+"</b>";
+  ls.innerHTML = t("skip")+"<b>🪙 "+PRICE.skip+"</b>";
+  lf.disabled = G.fiftyUsed || S.coins<PRICE.fifty;
+  lt.disabled = S.coins<PRICE.time;
+  ls.disabled = S.coins<PRICE.skip;
+}
+function spend(n){ if(S.coins<n){ alert(t("noCoins")); return false; } S.coins-=n; save(); updateHUD(); return true; }
+$("lifeFifty").onclick=()=>{
+  if(!G || G.locked || G.fiftyUsed) return;
+  if(!spend(PRICE.fifty)) return;
+  G.fiftyUsed=true; sndClick();
+  const q=G.qs[G.idx];
+  const wrongs=shuffle([0,1,2,3].filter(i=>i!==q.a)).slice(0,2);
+  document.querySelectorAll("#qOpts .opt").forEach(b=>{ if(wrongs.includes(+b.dataset.i)) b.classList.add("hide"); });
+  updateLifelines();
+};
+$("lifeTime").onclick=()=>{ if(!G || G.locked) return; if(!spend(PRICE.time)) return; sndClick(); G.timeLeft+=15; drawTimer(); updateLifelines(); };
+$("lifeSkip").onclick=()=>{ if(!G || G.locked) return; if(!spend(PRICE.skip)) return; sndClick(); stopTimer(); G.idx++; nextQuestion(); };
+$("quitBtn").onclick=()=>{ stopTimer(); G=null; renderMap(); show("scr-map"); };
+
+function endLevel(){
+  stopTimer();
+  const lv=G.lv, total=G.qs.length, need=needOf(lv);
+  const passed = G.correct>=need;
+  let stars=0, bonus=0;
+  if(passed){
+    stars = G.correct>=total ? 3 : G.correct===total-1 ? 2 : 1;
+    if(!S.stars[lv]){ bonus=bonusOf(lv); G.earned+=bonus; addCoins(bonus); }
+    if(stars>(S.stars[lv]||0)) S.stars[lv]=stars;
+    if(lv===S.unlocked && lv<30) S.unlocked=lv+1;
+    save();
+  }
+  $("resTitle").textContent = passed ? t("pass") : t("fail");
+  $("resStars").textContent = passed ? "★".repeat(stars)+"☆".repeat(3-stars) : "";
+  $("resInfo").innerHTML = t("level")+" "+lv+" • "+t("correctTxt")+": <b>"+G.correct+"/"+total+"</b><br>🪙 "+t("earned")+": <b>"+G.earned+"</b>"+(bonus?" (+"+bonus+" ⭐)":"");
+  const pb=$("resPassBuy");
+  if(!passed && G.correct===need-1){ pb.classList.remove("hidden"); pb.textContent=t("passBuy"); pb.disabled=S.coins<PRICE.passBuy; }
+  else pb.classList.add("hidden");
+  const nx=$("resNext");
+  if(passed && lv<30){ nx.classList.remove("hidden"); nx.textContent=t("next"); } else nx.classList.add("hidden");
+  $("resRetry").textContent=t("retry"); $("resMap").textContent=t("toMap");
+  $("resultModal").classList.add("open");
+  if(passed) sndWin();
+  G.result={passed, lv};
+}
+$("resPassBuy").onclick=()=>{
+  if(!G || !G.result || G.result.passed) return;
+  if(!spend(PRICE.passBuy)) return;
+  const lv=G.result.lv;
+  if(!S.stars[lv]) S.stars[lv]=1;
+  if(lv===S.unlocked && lv<30) S.unlocked=lv+1;
+  save(); sndWin();
+  $("resTitle").textContent=t("pass"); $("resStars").textContent="★☆☆";
+  $("resPassBuy").classList.add("hidden");
+  const nx=$("resNext"); if(lv<30){ nx.classList.remove("hidden"); nx.textContent=t("next"); }
+  G.result.passed=true;
+};
+$("resRetry").onclick=()=>{ $("resultModal").classList.remove("open"); sndClick(); startLevel(G.result.lv); };
+$("resNext").onclick=()=>{ $("resultModal").classList.remove("open"); sndClick(); startLevel(G.result.lv+1); };
+$("resMap").onclick=()=>{ $("resultModal").classList.remove("open"); sndClick(); G=null; renderMap(); show("scr-map"); };
+
+/* ================= HOME / NAV ================= */
+$("playBtn").onclick=()=>{
+  sndClick();
+  if(!S.name){ const v=$("nameInput").value.trim(); if(!v){ alert(t("needName")); $("nameInput").focus(); return; } S.name=v; save(); updateHUD(); }
+  startLevel(S.unlocked<=30?S.unlocked:30);
+};
+$("mapBtn").onclick=()=>{ sndClick(); renderMap(); show("scr-map"); };
+$("buyBtn").onclick=()=>{ sndClick(); renderBuy(); show("scr-buy"); };
+$("howBtn").onclick=()=>{ sndClick(); $("howModal").classList.add("open"); };
+$("howClose").onclick=()=>{ sndClick(); $("howModal").classList.remove("open"); };
+$("dailyBtn").onclick=()=>{
+  if(S.lastDaily===todayStr()) return;
+  S.lastDaily=todayStr(); save(); addCoins(50); sndWin(); alert(t("dailyGot")); updateDailyBtn();
+};
+document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>{ sndClick(); show("scr-home"); });
+$("langBtn").onclick=()=>{ S.lang = S.lang==="bn" ? "en" : "bn"; save(); applyI18n(); if(!$("scr-map").classList.contains("hidden")) renderMap(); };
+$("soundBtn").onclick=()=>{ S.sound=!S.sound; save(); applyI18n(); if(S.sound) sndClick(); };
+$("nameInput").addEventListener("change",e=>{ S.name=e.target.value.trim(); save(); updateHUD(); });
+
+/* ================= BUY COINS ================= */
+let selMethod="bKash", selPack=1;
+function renderBuy(){
+  const pl=$("packList"); pl.innerHTML="";
+  PACKS.forEach((p,i)=>{
+    const b=document.createElement("button"); b.className="pack";
+    b.innerHTML='<span class="amt">৳'+p.bdt+(p.best?'<span class="badge">'+t("best")+"</span>":"")+'</span><span class="cn">🪙 '+p.coins+' '+t("coins")+"</span>";
+    b.onclick=()=>{ sndClick(); selPack=i; $("fPkgSel").value=i; };
+    pl.appendChild(b);
+  });
+  const sel=$("fPkgSel"); sel.innerHTML="";
+  PACKS.forEach((p,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent="৳"+p.bdt+" → 🪙 "+p.coins; sel.appendChild(o); });
+  sel.value=selPack;
+  sel.onchange=()=>{ selPack=+sel.value; };
+  $("fNameIn").value = S.name||"";
+  $("payNumBox").innerHTML = PAY_NUMBER
+    ? "📱 "+t("payTo")+" <b style='color:var(--gold)'>"+PAY_NUMBER+"</b> ("+selMethod+")"
+    : "📱 "+t("paySoon")+" / Payment number will be added soon";
+}
+document.querySelectorAll(".method").forEach(b=>b.onclick=()=>{
+  sndClick(); selMethod=b.dataset.m;
+  document.querySelectorAll(".method").forEach(x=>x.classList.toggle("sel", x===b));
+  renderBuy();
+});
+$("reqBtn").onclick=()=>{
+  const name=$("fNameIn").value.trim(), sender=$("fSenderIn").value.trim(), trx=$("fTrxIn").value.trim();
+  if(!name || !sender || !trx){ alert(t("fillAll")); return; }
+  const p=PACKS[selPack];
+  let reqs=[]; try{ reqs=JSON.parse(localStorage.getItem(REQ_KEY))||[]; }catch(e){}
+  reqs.push({date:new Date().toISOString(), name, sender, trxid:trx, pkg:"৳"+p.bdt+" → "+p.coins+" coins", method:selMethod});
+  localStorage.setItem(REQ_KEY, JSON.stringify(reqs));
+  sndWin(); $("reqOk").style.display="block"; $("reqOk").textContent=t("reqOk");
+  $("fTrxIn").value="";
+};
+
+/* ================= DEMO ADMIN ================= */
+let verTaps=0;
+$("verTap").onclick=()=>{ verTaps++; if(verTaps>=5){ verTaps=0; renderAdmin(); $("adminModal").classList.add("open"); } };
+function renderAdmin(){
+  let reqs=[]; try{ reqs=JSON.parse(localStorage.getItem(REQ_KEY))||[]; }catch(e){}
+  const list=$("reqList");
+  list.innerHTML = reqs.length ? "" : "<div class='reqitem'>No requests yet / কোনো অনুরোধ নেই</div>";
+  reqs.slice().reverse().forEach(r=>{
+    const d=document.createElement("div"); d.className="reqitem";
+    d.textContent = r.date+" • "+r.name+" • "+r.method+" • "+r.pkg+" • From: "+r.sender+" • TrxID: "+r.trxid;
+    list.appendChild(d);
+  });
+}
+$("admAdd").onclick=()=>{ const n=parseInt($("admAmt").value,10); if(n>0){ addCoins(n); $("admAmt").value=""; } };
+$("admReset").onclick=()=>{ localStorage.removeItem(LS_KEY); localStorage.removeItem(REQ_KEY); S=loadState(); applyI18n(); renderAdmin(); alert("Reset done / রিসেট হয়েছে"); };
+$("admClose").onclick=()=>$("adminModal").classList.remove("open");
+
+/* ================= INIT ================= */
+if(S.name) $("nameInput").value=S.name;
+applyI18n();
+updateDailyBtn();
+</script>
+</body>
+</html>
