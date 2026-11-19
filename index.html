@@ -620,7 +620,7 @@ function renderBuy(){
   $("fNameIn").value = S.name||"";
   $("payNumBox").innerHTML = PAY_NUMBER
     ? "📱 "+t("payTo")+" <b style='color:var(--gold)'>"+PAY_NUMBER+"</b> ("+selMethod+")"
-    : "📱 "+t("paySoon")+" / Payment number will be added soon";
+    : "📱 "+t("paySoon");
 }
 document.querySelectorAll(".method").forEach(b=>b.onclick=()=>{
   sndClick(); selMethod=b.dataset.m;
